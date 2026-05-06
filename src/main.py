@@ -2,50 +2,58 @@
 import sys
 import os
 
-# --- LÓGICA DE RUTAS (BOILERPLATE PROFESIONAL) ---
-# Añadimos la carpeta 'src' al path de búsqueda para que Python
-# encuentre los módulos internos independientemente de dónde se ejecute.
-current_dir = os.path.dirname(os.path.abspath(__file__))
-if current_dir not in sys.path:
-    sys.path.append(current_dir)
+# --- ARQUITECTURA DE RUTAS (BLINDAJE SENIOR) ---
+# Localizamos la ruta absoluta de la carpeta 'src' para evitar conflictos de importación.
+# 'sys.path.insert(0, ...)' garantiza que el orquestador se localice antes que cualquier otro módulo.
+base_path = os.path.dirname(os.path.abspath(__file__))
+if base_path not in sys.path:
+    sys.path.insert(0, base_path)
 
-# Importación absoluta una vez configurado el entorno
-from orchestrator import iniciar_auditoria
+try:
+    # Importación absoluta optimizada para ejecución directa y futuro empaquetado (.exe)
+    from orchestrator import iniciar_auditoria
+except ImportError as e:
+    print(f"❌ Error crítico de arquitectura: No se pudo localizar el orquestador. {e}")
+    sys.exit(1)
 
 def ejecutar_consola():
     """
-    Interfaz de línea de comandos para interactuar con el sistema de auditoría.
+    Interfaz de línea de comandos (CLI) para la interacción con la Triada de Agentes.
+    Gestiona el ciclo de vida de la consulta y el control de excepciones.
     """
-    print("\n" + "="*60)
-    print("🛡️  SISTEMA MULTI-AGENTE DE AUDITORÍA TÉCNICA (Python/Sec)")
-    print("="*60)
-    print("Ingresa tu duda técnica (o escribe 'salir' para finalizar).")
-    print("-"*60 + "\n")
+    print("\n" + "█" * 60)
+    print("🛡️  SISTEMA MULTI-AGENTE DE AUDITORÍA TÉCNICA (Llama 3 + AutoGen)")
+    print("█" * 60)
+    print("Enfoque: Ciberseguridad Defensiva y Programación Robusta.")
+    print("Escribe 'salir' para finalizar la sesión.\n")
 
     while True:
         try:
-            pregunta = input("Consulta > ")
+            # Captura de la duda técnica o código a auditar
+            pregunta = input("Consulta > ").strip()
             
-            if pregunta.lower() in ["salir", "exit", "q"]:
-                print("\nCerrando el auditor. Sesión finalizada.")
-                break
-            
-            if not pregunta.strip():
+            if not pregunta:
                 continue
 
-            # Disparo del orquestador multi-agente
+            if pregunta.lower() in ["salir", "exit", "q"]:
+                print("\n[!] Cerrando el laboratorio. Auditoría finalizada.")
+                break
+
+            # Lanzamiento del debate entre DevExpert, SecurityShadow y ChiefArchitect
             iniciar_auditoria(pregunta)
             
-            print("\n" + "-"*60)
-            print("Esperando nueva consulta...")
+            print("\n" + "─" * 60)
+            print("Auditores en espera de la siguiente consulta...")
             
         except ConnectionError:
-            print("\n❌ Error: No se pudo conectar con Ollama. Verifica que el servidor esté activo.")
-        except Exception as e:
-            print(f"\n❌ Se produjo un error inesperado: {e}")
+            print("\n❌ ERROR: Sin respuesta de Ollama. Asegúrate de que el servidor esté activo.")
         except KeyboardInterrupt:
-            print("\n\nInterrupción manual detectada. Saliendo...")
+            print("\n\n[!] Interrupción manual detectada. Saliendo de forma segura...")
             break
+        except Exception as e:
+            print(f"\n❌ ERROR INESPERADO: {e}")
 
 if __name__ == "__main__":
     ejecutar_consola()
+
+

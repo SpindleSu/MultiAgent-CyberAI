@@ -1,59 +1,68 @@
 
-from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
+import autogen
+from agents import ROLES
 
-# Configuración de conexión con el motor de IA local (Ollama)
-# Se utiliza el endpoint compatible con OpenAI para máxima compatibilidad.
+# --- CONFIGURACIÓN DE INFRAESTRUCTURA LLM ---
+# Centralizamos la conexión con Ollama para garantizar la soberanía del dato.
+# Se utiliza el modelo Llama 3 (8B) por su alta capacidad de razonamiento técnico.
 config_list = [
     {
         "model": "llama3", 
         "base_url": "http://localhost:11434/v1",
-        "api_key": "ollama", # Requerido por la sintaxis de AutoGen
+        "api_key": "ollama", # Requerido por el estándar de AutoGen
     }
 ]
 
 def iniciar_auditoria(pregunta_usuario):
     """
-    Orquesta un debate dinámico entre agentes especializados para
-    validar la seguridad y eficiencia de una solución técnica.
+    Orquesta un debate técnico asíncrono entre agentes especializados.
+    Utiliza el framework AutoGen para gestionar la confrontación de ideas.
     """
-    from agents import ROLES  # Importación local para evitar dependencias circulares
 
-    # Representa al usuario. Modo 'NEVER' para que la IA debata de forma autónoma.
-    admin = UserProxyAgent(
+    # 1. AGENTE DE CONTROL (ADMIN): Representa al usuario y lanza el debate.
+    admin = autogen.UserProxyAgent(
         name="Admin", 
         human_input_mode="NEVER", 
         code_execution_config=False,
         max_consecutive_auto_reply=1
     )
 
-    # Inicialización de los tres agentes con sus respectivas personalidades
-    programador = AssistantAgent(
+    # 2. AGENTE DESARROLLADOR (DEV): Genera la propuesta técnica inicial.
+    programador = autogen.AssistantAgent(
         name="DevExpert",
         llm_config={"config_list": config_list},
         system_message=ROLES["desarrollador"]["instrucciones"]
     )
 
-    auditor = AssistantAgent(
+    # 3. AGENTE AUDITOR (SECURITY): Busca vulnerabilidades (Red Team).
+    auditor = autogen.AssistantAgent(
         name="SecurityShadow",
         llm_config={"config_list": config_list},
         system_message=ROLES["auditor"]["instrucciones"]
     )
 
-    juez = AssistantAgent(
+    # 4. AGENTE ARQUITECTO (JUDGE): Consolida la solución final segura.
+    juez = autogen.AssistantAgent(
         name="ChiefArchitect",
         llm_config={"config_list": config_list},
         system_message=ROLES["juez"]["instrucciones"]
     )
 
-    # Gestión de la charla grupal (GroupChat)
-    # Se limita a 6 rondas para optimizar el procesamiento local y evitar bucles.
-    groupchat = GroupChat(
+    # --- LÓGICA DE GRUPO (MULTI-AGENT ORCHESTRATION) ---
+    # Definimos un chat grupal para que los agentes interactúen dinámicamente.
+    # El límite de 6 rondas previene bucles infinitos y optimiza la RAM local.
+    groupchat = autogen.GroupChat(
         agents=[admin, programador, auditor, juez], 
         messages=[], 
         max_round=6 
     )
     
-    manager = GroupChatManager(groupchat=groupchat, llm_config={"config_list": config_list})
+    manager = autogen.GroupChatManager(
+        groupchat=groupchat, 
+        llm_config={"config_list": config_list}
+    )
 
-    # Lanzamiento del flujo de trabajo multi-agente
+    # Iniciamos la sesión de auditoría con la entrada del usuario
     admin.initiate_chat(manager, message=pregunta_usuario)
+
+
