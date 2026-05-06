@@ -1,4 +1,19 @@
+# Entorno virtual
 venv/
+.venv/
+env/
+
+# Temporales de Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Configuración y secretos
 .env
+.vscode/
+
+# Archivos de oficina (por seguridad)
+*.odt
+*.docx
+*.pdf
