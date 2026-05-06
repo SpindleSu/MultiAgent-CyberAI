@@ -1,25 +1,24 @@
 
 from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
 
-# Configuración de conexión con el servidor local de modelos (Ollama)
-# Se utiliza el endpoint compatible con OpenAI para facilitar la integración
+# Configuración de conexión con el motor de IA local (Ollama)
+# Se utiliza el endpoint compatible con OpenAI para máxima compatibilidad.
 config_list = [
     {
         "model": "llama3", 
         "base_url": "http://localhost:11434/v1",
-        "api_key": "ollama",
+        "api_key": "ollama", # Requerido por la sintaxis de AutoGen
     }
 ]
 
 def iniciar_auditoria(pregunta_usuario):
     """
-    Orquesta un debate técnico entre tres agentes especializados.
-    El objetivo es confrontar la funcionalidad frente a la seguridad
-    para obtener una solución técnica validada y robusta.
+    Orquesta un debate dinámico entre agentes especializados para
+    validar la seguridad y eficiencia de una solución técnica.
     """
+    from agents import ROLES  # Importación local para evitar dependencias circulares
 
-    # Representa al usuario humano. No interviene (NEVER) para permitir 
-    # que la discusión entre los agentes sea autónoma y fluida.
+    # Representa al usuario. Modo 'NEVER' para que la IA debata de forma autónoma.
     admin = UserProxyAgent(
         name="Admin", 
         human_input_mode="NEVER", 
@@ -27,31 +26,27 @@ def iniciar_auditoria(pregunta_usuario):
         max_consecutive_auto_reply=1
     )
 
-    # Perfil enfocado en la entrega de resultados funcionales y eficientes.
+    # Inicialización de los tres agentes con sus respectivas personalidades
     programador = AssistantAgent(
         name="DevExpert",
         llm_config={"config_list": config_list},
-        system_message="Eres un programador senior de Python. Tu prioridad es ofrecer código ejecutable y eficiente."
+        system_message=ROLES["desarrollador"]["instrucciones"]
     )
 
-    # Perfil con mentalidad de 'Red Team'. Su misión es encontrar vulnerabilidades,
-    # malas prácticas y riesgos de seguridad en el código propuesto.
     auditor = AssistantAgent(
         name="SecurityShadow",
         llm_config={"config_list": config_list},
-        system_message="Eres un experto en ciberseguridad. Sé ácido y crítico. Busca fallos de seguridad en cada propuesta."
+        system_message=ROLES["auditor"]["instrucciones"]
     )
 
-    # El punto de equilibrio. Filtra el ruido de la discusión y redacta 
-    # la versión definitiva aplicando los parches de seguridad necesarios.
     juez = AssistantAgent(
         name="ChiefArchitect",
         llm_config={"config_list": config_list},
-        system_message="Eres un Arquitecto de Sistemas veterano. Tu meta es dictar la solución final que sea segura y funcional."
+        system_message=ROLES["juez"]["instrucciones"]
     )
 
-    # El GroupChat permite la interacción dinámica (no lineal) entre agentes.
-    # Limitamos a 6 rondas para optimizar el consumo de recursos locales.
+    # Gestión de la charla grupal (GroupChat)
+    # Se limita a 6 rondas para optimizar el procesamiento local y evitar bucles.
     groupchat = GroupChat(
         agents=[admin, programador, auditor, juez], 
         messages=[], 
@@ -60,5 +55,5 @@ def iniciar_auditoria(pregunta_usuario):
     
     manager = GroupChatManager(groupchat=groupchat, llm_config={"config_list": config_list})
 
-    # Punto de inicio del flujo de trabajo multi-agente
+    # Lanzamiento del flujo de trabajo multi-agente
     admin.initiate_chat(manager, message=pregunta_usuario)
