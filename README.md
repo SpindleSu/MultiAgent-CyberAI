@@ -61,3 +61,16 @@ python src/main.py
 
 ---
 *Enfoque: Ciberseguridad Defensiva y Programación Robusta.*
+
+
+---
+
+> [!IMPORTANT]
+> **Aviso Legal y Uso Ético**
+>
+> Este proyecto ha sido desarrollado exclusivamente con **fines didácticos y de investigación**. El autor no se hace responsable del uso indebido, ilegal o malintencionado de este código. 
+> 
+> Queda estrictamente prohibido su uso en actividades que vulneren la privacidad de terceros o la seguridad de sistemas sin autorización expresa. Al utilizar este repositorio, el usuario acepta que es el único responsable de cumplir con la legislación vigente.
+
+Este proyecto está bajo la licencia [MIT](LICENSE).
+
