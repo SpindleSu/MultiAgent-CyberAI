@@ -2,7 +2,7 @@
 import sys
 import os
 
-# --- ARQUITECTURA DE RUTAS (BLINDAJE SENIOR) ---
+# --- ARQUITECTURA DE RUTAS c ---
 # Localizamos la ruta absoluta de la carpeta 'src' para evitar conflictos de importación.
 # 'sys.path.insert(0, ...)' garantiza que el orquestador se localice antes que cualquier otro módulo.
 base_path = os.path.dirname(os.path.abspath(__file__))
