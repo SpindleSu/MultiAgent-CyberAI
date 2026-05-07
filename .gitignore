@@ -1,19 +1,45 @@
-# Entorno virtual
+# === ENTORNO VIRTUAL ===
 venv/
 .venv/
 env/
+ENV/
+bin/
+lib/
+include/
 
-# Temporales de Python
+# === TEMPORALES DE PYTHON ===
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.pytest_cache/
+.coverage
+.ipynb_checkpoints/
 
-# Configuración y secretos
+# === CONFIGURACIÓN Y SECRETOS (CRÍTICO) ===
 .env
+.env.local
+.env.*
 .vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
 
-# Archivos de oficina (por seguridad)
+# === SALIDAS DINÁMICAS (AI GENERATED) ===
+# Ignoramos la herramienta generada para no subir credenciales accidentales
+src/tools.py
+outputs/
+*.json
+*.log
+
+# === ARCHIVOS DE OFICINA Y DOCUMENTACIÓN ===
 *.odt
 *.docx
 *.pdf
+*.xlsx
+
+# === BASE DE DATOS Y CACHÉ DE AGENTES ===
+*.db
+*.sqlite3
+.autogen/

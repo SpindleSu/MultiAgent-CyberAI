@@ -11,7 +11,8 @@ if base_path not in sys.path:
 
 try:
     # Importación absoluta optimizada para ejecución directa y futuro empaquetado (.exe)
-    from orchestrator import iniciar_auditoria
+    from orchestrator.engine import iniciar_auditoria
+
 except ImportError as e:
     print(f"❌ Error crítico de arquitectura: No se pudo localizar el orquestador. {e}")
     sys.exit(1)
