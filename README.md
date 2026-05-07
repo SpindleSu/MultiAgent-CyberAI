@@ -51,6 +51,13 @@ python src/main.py
 - **Compatibilidad de Hardware:** Configuración documentada para ejecución en RAM (CPU) evitando errores de memoria en GPUs con menos de 4GB (GTX 1050).
 
 ```
+## 🚀 Actualizaciones Recientes (v2.1)
+
+### Optimización de Infraestructura y Lógica
+- **Compatibilidad Universal de Hardware:** Implementación de inferencia forzada en **CPU/RAM** (`num_gpu: 0`) para evitar bloqueos por falta de VRAM en equipos con GPUs limitadas.
+- **Auditoría de Código Pragmática:** Refactorización del rol del **Juez (ChiefArchitect)** para priorizar la ejecución inmediata, eliminando validaciones de integridad (hashes) que causaban bucles de error.
+- **Persistencia de Scripts de Alta Integridad:** Mejora en el motor de extracción para asegurar que `src/tools.py` reciba scripts 100% autocontenidos y funcionales.
+- **Seguridad de Archivos:** Saneamiento de rutas para mitigar riesgos de *Path Traversal* en las herramientas generadas.
 
 ---
 *Enfoque: Ciberseguridad Defensiva y Programación Robusta.*
