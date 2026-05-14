@@ -1,4 +1,7 @@
-# === ENTORNO VIRTUAL ===
+# =========================================================
+# ENTORNOS VIRTUALES
+# =========================================================
+
 venv/
 .venv/
 env/
@@ -7,39 +10,83 @@ bin/
 lib/
 include/
 
-# === TEMPORALES DE PYTHON ===
+
+# =========================================================
+# PYTHON CACHE Y TEMPORALES
+# =========================================================
+
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
 .pytest_cache/
 .coverage
 .ipynb_checkpoints/
 
-# === CONFIGURACIÓN Y SECRETOS (CRÍTICO) ===
+
+# =========================================================
+# VARIABLES DE ENTORNO Y SECRETOS
+# =========================================================
+
 .env
 .env.local
 .env.*
+
+# IDEs
 .vscode/
 .idea/
+
+# Visual Studio
 *.suo
 *.ntvs*
 *.njsproj
 
-# === SALIDAS DINÁMICAS (AI GENERATED) ===
-# Ignoramos la herramienta generada para no subir credenciales accidentales
+
+# =========================================================
+# OUTPUTS Y ARCHIVOS GENERADOS
+# =========================================================
+
+# Legacy
 src/tools.py
+
+# Nueva arquitectura
+src/generated/
+
+# Outputs runtime
+output/
 outputs/
-*.json
+
+# Logs
 *.log
 
-# === ARCHIVOS DE OFICINA Y DOCUMENTACIÓN ===
+# JSON temporales
+*.json
+
+
+# =========================================================
+# BASES DE DATOS Y CACHÉS
+# =========================================================
+
+*.db
+*.sqlite3
+.autogen/
+
+
+# =========================================================
+# DOCUMENTOS Y ARCHIVOS OFIMÁTICOS
+# =========================================================
+
 *.odt
 *.docx
 *.pdf
 *.xlsx
 
-# === BASE DE DATOS Y CACHÉ DE AGENTES ===
-*.db
-*.sqlite3
-.autogen/
+
+# =========================================================
+# ARCHIVOS DEL SISTEMA OPERATIVO
+# =========================================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
